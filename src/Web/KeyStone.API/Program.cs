@@ -1,7 +1,9 @@
 
 using EntityFrameworkCore.UnitOfWork.Extensions;
 using KeyStone.API.Extensions;
+using KeyStone.Core.Services;
 using KeyStone.Data;
+using KeyStone.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -50,12 +52,15 @@ namespace KeyStone.API
             // Register the UnitOfWork
             builder.Services.AddUnitOfWork();
             //builder.Services.AddUnitOfWork<KeyStoneDbContext>(); // Multiple databases support
+            builder.Services.AddCustomDataServices();
 
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddScoped<IDataSeedService,BasicDataSeeder>();
 
             var app = builder.Build();
 

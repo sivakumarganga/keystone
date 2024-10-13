@@ -1,0 +1,2 @@
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add "Initial Migration" --context KeyStoneDbContext --project ./src/KeyStone.Data/KeyStone.Data.csproj --startup-project ./src/Web/KeyStone.API/KeyStone.API.csproj  --verbose

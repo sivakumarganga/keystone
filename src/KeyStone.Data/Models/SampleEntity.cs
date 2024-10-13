@@ -30,7 +30,7 @@ namespace KeyStone.Data.Models
 
             // Table & Column Mappings
             builder.ToTable("SampleEntity");
-            builder.Property(x => x.Id).HasColumnName("Id");
+            builder.Property(x => x.Id).HasIdentityOptions().HasColumnName("Id");
             builder.Property(x => x.Name).HasColumnName("Url");
 
             //  Relationships

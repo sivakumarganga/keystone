@@ -20,13 +20,16 @@ namespace KeyStone.API.Extensions
         }
         public static async Task SeedDefaultBusinessEntitiesAsync(this WebApplication app)
         {
-            await using var scope = app.Services.CreateAsyncScope();
-            var seedService = scope.ServiceProvider.GetRequiredService<IDataSeedService>();
-            if(seedService is not null)
+            try
             {
-                await seedService.Seed();
+                await using var scope = app.Services.CreateAsyncScope();
+                var seedService = scope.ServiceProvider.GetRequiredService<IDataSeedService>();
+                if (seedService is not null)
+                {
+                    await seedService.Seed();
+                }
             }
-            
+            catch (Exception ex) { }
         }
     }
 }

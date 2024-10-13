@@ -12,4 +12,8 @@
     <PackageReference Include="Pluralize.NET" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KeyStone.Core\KeyStone.Core.csproj" />
+  </ItemGroup>
+
 </Project>
