@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Data.UnitOfWork" Version="8.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.1" />
+    <PackageReference Include="Pluralize.NET" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

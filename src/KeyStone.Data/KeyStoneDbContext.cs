@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EntityFrameworkCore.AutoHistory.Extensions;
+using System.Reflection.Emit;
+using System.Security.Principal;
 
 namespace KeyStone.Data
 {
@@ -49,6 +51,8 @@ namespace KeyStone.Data
         {
             // Enables auto history functionality.
             builder.EnableAutoHistory();
+            var entitiesAssembly = typeof(IEntity).Assembly;
+            builder.RegisterAllEntities<IEntity>(entitiesAssembly);
             builder.ApplyConfigurationsFromAssembly(typeof(KeyStoneDbContext).Assembly);
         }
     }

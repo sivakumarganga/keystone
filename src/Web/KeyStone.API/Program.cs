@@ -1,21 +1,25 @@
 
 using EntityFrameworkCore.UnitOfWork.Extensions;
+using KeyStone.API.Extensions;
 using KeyStone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 
 namespace KeyStone.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.development.json",optional:true,reloadOnChange:true);
+
+            builder.Configuration.AddJsonFile("appsettings.json")
+                                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
+                                .AddEnvironmentVariables()
+                                .AddUserSecrets(Assembly.GetEntryAssembly()!);
 
 
 
@@ -28,14 +32,13 @@ namespace KeyStone.API
                 //{
                 //    var assembly = typeof(KeyStoneDbContext).Assembly;
                 //    var assemblyName = assembly.GetName();
-
                 //    sqlServerOptions.MigrationsAssembly(assemblyName.Name);
                 //});
-                options.UseNpgsql(connectionString, npgsqlOptions =>
+                options.UseNpgsql(connectionString, npgSqlOptions =>
                 {
                     var assembly = typeof(KeyStoneDbContext).Assembly;
                     var assemblyName = assembly.GetName();
-                    npgsqlOptions.MigrationsAssembly(assemblyName.Name);
+                    npgSqlOptions.MigrationsAssembly(assemblyName.Name);
                 });
                 //options.UseInMemoryDatabase("MyDatabase");
                 options.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
@@ -55,6 +58,9 @@ namespace KeyStone.API
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
+
+            await app.ApplyMigrationsAsync();
+            await app.SeedDefaultBusinessEntitiesAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
