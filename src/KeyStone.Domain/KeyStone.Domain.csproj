@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentResults" Version="3.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KeyStone.Concerns\KeyStone.Concerns.csproj" />
+    <ProjectReference Include="..\KeyStone.Core\KeyStone.Core.csproj" />
+    <ProjectReference Include="..\KeyStone.Data\KeyStone.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
