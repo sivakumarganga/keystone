@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EntityFrameworkCore.AutoHistory.Extensions;
 using System.Reflection.Emit;
 using System.Security.Principal;
+using KeyStone.Data.Extensions;
 
 namespace KeyStone.Data
 {

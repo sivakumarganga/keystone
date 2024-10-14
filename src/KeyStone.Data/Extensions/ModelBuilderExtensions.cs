@@ -7,8 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Pluralize.NET;
+using KeyStone.Data;
 
-namespace KeyStone.Data
+namespace KeyStone.Data.Extensions
 {
     public static class ModelBuilderExtensions
     {
