@@ -74,8 +74,9 @@ namespace KeyStone.Domain.Services
                 return Result.Fail<SampleConcern>($"No record found with id {concern.Id}");
             }
             entity.Name = concern.Name;
-            await _sampleEntityRepo.UpdateAsync(_ => _.Id == id, _ => _.SetProperty(_ => _.Name, _ => _.Name));
-            var changesCount = _unitOfWork.SaveChanges();
+            //await _sampleEntityRepo.UpdateAsync(_ => _.Id == id, _ => _.SetProperty(p => p.Name, v => v.Name));
+            _sampleEntityRepo.Update(entity);
+            var changesCount = await _unitOfWork.SaveChangesAsync();
             if (changesCount == 0)
             {
                 return Result.Fail<SampleConcern>("Failed to save record");
@@ -89,7 +90,7 @@ namespace KeyStone.Domain.Services
             {
                 return Result.Fail($"No record found with id {id}");
             }
-            await _sampleEntityRepo.ReloadAsync(entity);
+            await _sampleEntityRepo.RemoveAsync(_ => _.Id == id);
             var changesCount = _unitOfWork.SaveChanges();
             if (changesCount == 0)
             {

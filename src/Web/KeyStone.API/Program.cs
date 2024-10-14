@@ -1,9 +1,11 @@
 
 using EntityFrameworkCore.UnitOfWork.Extensions;
 using KeyStone.API.Extensions;
+using KeyStone.Core.Contracts;
 using KeyStone.Core.Services;
 using KeyStone.Data;
 using KeyStone.Data.Extensions;
+using KeyStone.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -55,18 +57,20 @@ namespace KeyStone.API
             builder.Services.AddCustomDataServices();
 
             // Add services to the container.
+            builder.Services.AddScoped<ISampleContract,SampleEntityService>();  
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             builder.Services.AddScoped<IDataSeedService,BasicDataSeeder>();
-
+            builder.Services.AddSwagger();
+            builder.Services.AddWebFrameworkServices();
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
             await app.SeedDefaultBusinessEntitiesAsync();
-
+            app.UseSwaggerAndUI();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
