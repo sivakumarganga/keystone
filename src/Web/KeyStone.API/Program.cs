@@ -1,26 +1,30 @@
 
 using EntityFrameworkCore.UnitOfWork.Extensions;
 using KeyStone.API.Extensions;
+using KeyStone.API.ServiceConfiguration;
 using KeyStone.Core.Contracts;
 using KeyStone.Core.Services;
 using KeyStone.Data;
 using KeyStone.Data.Extensions;
+using KeyStone.Domain;
 using KeyStone.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Asp.Versioning;
-using KeyStone.Domain;
 
 namespace KeyStone.API
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                Args = args,
+                ApplicationName = "KeyStone.API",
+            });
 
             builder.Configuration.AddJsonFile("appsettings.json")
                                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
@@ -89,6 +93,7 @@ namespace KeyStone.API
 
             app.UseAuthorization();
 
+            app.ConfigureCustomMiddlewares();
 
             app.MapControllers();
 

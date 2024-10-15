@@ -12,6 +12,10 @@ namespace KeyStone.API.Controllers
         {
         }
 
+        protected string GetRequestId()
+        {
+            return (string)HttpContext.Items["RequestId"];
+        }
         protected IActionResult ResultResponse<T>(Result<T> result)
         {
             if (result.IsFailed)
