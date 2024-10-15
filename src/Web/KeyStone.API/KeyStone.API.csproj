@@ -45,4 +45,10 @@
 		<ProjectReference Include="..\..\KeyStone.Shared\KeyStone.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models\Responses\" />
+	  <Folder Include="NewFolder\" />
+	  <Folder Include="Models\Requests\" />
+	</ItemGroup>
+
 </Project>
