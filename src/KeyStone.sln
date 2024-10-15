@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyStone.Shared", "KeyStone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyStone.Web", "Web\KeyStone.Web\KeyStone.Web.csproj", "{81BC97A3-84A7-47D6-A64E-8C683F1A4286}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyStone.Identity", "KeyStone.Identity\KeyStone.Identity.csproj", "{A5290597-AAE2-4694-A4B0-BE5768B9D282}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{81BC97A3-84A7-47D6-A64E-8C683F1A4286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81BC97A3-84A7-47D6-A64E-8C683F1A4286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81BC97A3-84A7-47D6-A64E-8C683F1A4286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5290597-AAE2-4694-A4B0-BE5768B9D282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5290597-AAE2-4694-A4B0-BE5768B9D282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5290597-AAE2-4694-A4B0-BE5768B9D282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5290597-AAE2-4694-A4B0-BE5768B9D282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{ED70387A-D415-49A1-BB4B-879A7C4871BA} = {3DB2DA51-DC8C-4139-A29C-44D5BC8D8CBE}
 		{DD431F99-65D2-455E-B454-DC8B204C836F} = {3DB2DA51-DC8C-4139-A29C-44D5BC8D8CBE}
 		{81BC97A3-84A7-47D6-A64E-8C683F1A4286} = {85CAF36B-A718-4613-B70D-BA1A864C340E}
+		{A5290597-AAE2-4694-A4B0-BE5768B9D282} = {3DB2DA51-DC8C-4139-A29C-44D5BC8D8CBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BB8241C-8080-4F4E-A63E-DFB1C149E312}

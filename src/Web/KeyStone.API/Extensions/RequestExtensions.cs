@@ -1,4 +1,5 @@
 ﻿using KeyStone.Core.Context;
+using KeyStone.Shared.Extensions;
 using System.Security.Claims;
 
 namespace KeyStone.API.Extensions

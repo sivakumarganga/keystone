@@ -1,9 +1,8 @@
-﻿using KeyStone.Shared.Extensions;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace KeyStone.API.Extensions
+namespace KeyStone.Shared.Extensions
 {
     public static class IdentityExtensions
     {
