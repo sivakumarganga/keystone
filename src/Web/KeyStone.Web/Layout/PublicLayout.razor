@@ -1,0 +1,33 @@
+﻿@using KeyStone.Web.Services
+@using KeyStone.Web.Shared.Resources
+@using KeyStone.Web.Styles
+@inherits LayoutComponentBase
+@inject ToastService ToastService
+
+<MudSnackbarProvider />
+<MudThemeProvider Theme="Themes.DefaultTheme" />
+
+<MudLayout>
+    <MudMainContent Class="ma-0 pa-0" Style="background-color:white">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="ma-0 pa-0">
+            <ErrorBoundary Context="Exception">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                    @{
+                    OnError(@Exception.Message);
+                    }
+                </ErrorContent>
+            </ErrorBoundary>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code{
+void OnError(string message)
+{
+ToastService.ShowError(LocalizationResource.SomethingWentWrong);
+ToastService.ShowError(message);
+}
+}

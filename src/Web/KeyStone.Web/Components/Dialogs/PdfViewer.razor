@@ -1,0 +1,50 @@
+﻿<style>
+    .pdf-view {
+        height: 60vh;
+    }
+</style>
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @Title
+        </MudText>
+        <MudDivider Class="mt-3 mb-1" />
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Class="pdf-view">
+            @if (!string.IsNullOrEmpty(_pdfAsBase64))
+            {
+                <iframe id="pdfViewer" src="data:application/pdf;charset=utf-8;base64,@_pdfAsBase64#toolbar=0&navpanes=0&scrollbar=0"></iframe>
+            }
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [Parameter]
+    public string DocumentId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; }
+
+
+    private string _pdfAsBase64 = string.Empty;
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Close() => MudDialog.Cancel();
+
+    protected async override Task OnInitializedAsync()
+    {
+        //fetch the document from the server
+        //convert it to base64 and assign it to _pdfAsBase64
+        _pdfAsBase64 = string.Empty;
+    }
+
+}

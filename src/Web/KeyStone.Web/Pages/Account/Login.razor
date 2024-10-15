@@ -1,0 +1,141 @@
+﻿@page "/login"
+@page "/"
+@using KeyStone.Web.Common
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using KeyStone.Web.Contracts
+@using KeyStone.Web.Layout
+@using KeyStone.Web.Services
+@using KeyStone.Web.Shared.Resources
+
+@using KeyStone.Web.Common.Models
+@attribute [AllowAnonymous]
+@inject NavigationManager NavigationManager
+@inject IAccountManagement AccountManagement
+@inject ToastService ToastService
+@inject ResXMudLocalizer L
+@layout PublicLayout
+
+<MudGrid Style="width:100%; overflow-x:hidden">
+    <MudItem xs="6" Class="relative ma-0 pa-0 login-bg">
+        <img src="images/login-bg.png" alt="Logo" class="logo" style="height:100vh"/>
+    </MudItem>
+
+    <MudItem xs="6" Class="ma-0 pa-0">
+        <MudStack Class="p-20">
+            <MudItem Class="mt-10">
+                <MudText Class="font-bold my-5" Typo="Typo.h5"> @L[LocalizationResource.LoginPageMessage]</MudText>
+                <MudForm @ref="form" @bind-IsValid="@success">
+                    <MudTextField T="string"
+                                  Label="@LocalizationResource.Username"
+                                  Variant="Variant.Outlined"
+                                  @bind-Value="@model.Username"
+                                  Required="true"
+                                  RequiredError="Username is required!"
+                                  Class="my-5">
+                    </MudTextField>
+                    <MudTextField Class="my-2"
+                                  Label="@LocalizationResource.Password"
+                                  @bind-Value="model.Password"
+                                  Variant="Variant.Outlined"
+                                  InputType="@PasswordInput"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@PasswordInputIcon"
+                                  OnAdornmentClick="ShowHidePassword"
+                                  AdornmentAriaLabel="Show Password"
+                                  Required="true"
+                                  RequiredError="Password is required!"/>
+                    <MudButton Color="Color.Primary"
+                               Class="mt-5 mb-2 p-3"
+                               OnClick="@Submit"
+                               ButtonType="ButtonType.Button"
+                               Variant="Variant.Filled"
+                               FullWidth="true" Disabled="@_disableSubmitBtn">
+                        @_submitBtnLabel
+                    </MudButton>
+                </MudForm>
+            </MudItem>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+@code {
+    LoginRequest model = new LoginRequest();
+    string _submitBtnLabel = "Login";
+    bool _disableSubmitBtn = false;
+    MudForm form;
+    public bool RememberMe { get; set; } = true;
+    bool isShow;
+    private bool success;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Outlined.VisibilityOff;
+
+    [CascadingParameter] public Task<AuthenticationState>? authenticationState { get; set; }
+
+    public async Task Submit()
+    {
+        try
+        {
+            _submitBtnLabel = "logging in...";
+            _disableSubmitBtn = true;
+            await form.Validate();
+            NavigationManager.NavigateTo("./home");
+            if (success)
+            {
+                AuthenticationResult result = await AccountManagement.LoginAsync(model);
+                if (result.IsAuthenticated)
+                {
+                    var state = await authenticationState;
+                    if (state.User.IsInRole(Constants.Roles.Admin))
+                    {
+                        NavigationManager.NavigateTo("/agents");
+                    }
+                    else
+                    {
+                        NavigationManager.NavigateTo("/dashboard");
+                    }
+                }
+                else
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ToastService.ShowError(error);
+                    }
+                }
+            }
+        }
+        catch
+        {
+            ToastService.ShowError(Constants.SomethingWentWrong);
+        }
+        finally
+        {
+            _submitBtnLabel = "Login";
+            _disableSubmitBtn = false;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO: fetch authentication state from AccountManagement service
+        //TODO: if the user is authenticated, navigate to home
+        await base.OnInitializedAsync();
+    }
+
+    void ShowHidePassword()
+    {
+        if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Outlined.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Outlined.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+}

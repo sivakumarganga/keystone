@@ -1,0 +1,10 @@
+﻿.mud-drawer-fixed.mud-drawer-mini.mud-drawer-clipped-always, 
+.mud-drawer-fixed.mud-drawer-persistent:not(.mud-drawer-clipped-never), 
+.mud-drawer-fixed.mud-drawer-responsive.mud-drawer-clipped-always, 
+.mud-drawer-fixed.mud-drawer-temporary.mud-drawer-clipped-always {
+    top: 0 !important;
+    height: 97% !important;
+}
+:root {
+  --mud-appbar-height : 0px !important;
+}
