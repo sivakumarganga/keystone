@@ -1,4 +1,5 @@
-﻿using KeyStone.Shared.Extensions;
+﻿using Asp.Versioning;
+using KeyStone.Shared.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -116,7 +117,7 @@ namespace KeyStone.API.Extensions
                 options.DocInclusionPredicate((docName, apiDesc) =>
                 {
 
-                    var endpointApiVersions = apiDesc.ActionDescriptor.EndpointMetadata.OfType<Asp.Versioning.ApiVersionMetadata>();
+                    var endpointApiVersions = apiDesc.ActionDescriptor.EndpointMetadata.OfType<ApiVersionMetadata>();
 
                     foreach (var endpointApiVersion in endpointApiVersions)
                     {

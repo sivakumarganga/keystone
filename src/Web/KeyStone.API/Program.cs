@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Reflection;
+using Asp.Versioning;
 
 namespace KeyStone.API
 {
@@ -66,6 +67,8 @@ namespace KeyStone.API
             builder.Services.AddScoped<IDataSeedService,BasicDataSeeder>();
             builder.Services.AddSwagger();
             builder.Services.AddWebFrameworkServices();
+
+            builder.Services.AddApiVersioning();
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
