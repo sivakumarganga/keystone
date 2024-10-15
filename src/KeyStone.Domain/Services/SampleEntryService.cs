@@ -1,4 +1,5 @@
-﻿using EntityFrameworkCore.Repository.Interfaces;
+﻿using AutoMapper;
+using EntityFrameworkCore.Repository.Interfaces;
 using EntityFrameworkCore.UnitOfWork.Interfaces;
 using FluentResults;
 using KeyStone.Concerns.Domain;
@@ -20,21 +21,19 @@ namespace KeyStone.Domain.Services
         IUnitOfWork _unitOfWork;
         ISampleEntityRepository _sampleEntityRepository;
         IRepository<SampleEntity> _sampleEntityRepo;
-        public SampleEntityService(IUnitOfWork unitOfWork)
+        IMapper _mapper;
+        public SampleEntityService(IUnitOfWork unitOfWork,IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
             _sampleEntityRepo = this._unitOfWork.Repository<SampleEntity>();
             _sampleEntityRepository = this._unitOfWork.CustomRepository<ISampleEntityRepository>();
+            _mapper = mapper;
         }
         public async Task<Result<IEnumerable<SampleConcern>>> GetAll()
         {
 
             var result = await _sampleEntityRepository.GetAll();
-            var sampleConcerns = result.Select(x => new SampleConcern()
-            {
-                Id = x.Id,
-                Name = x.Name
-            });
+            var sampleConcerns = result.Select(x => _mapper.Map<SampleConcern>(x));
             return Result.Ok(sampleConcerns);
         }
         public async Task<Result<SampleConcern>> GetById(int id)

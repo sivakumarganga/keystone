@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using Asp.Versioning;
+using KeyStone.Domain;
 
 namespace KeyStone.API
 {
@@ -58,17 +59,21 @@ namespace KeyStone.API
             builder.Services.AddCustomDataServices();
 
             // Add services to the container.
-            builder.Services.AddScoped<ISampleContract,SampleEntityService>();  
+            builder.Services.AddScoped<ISampleContract, SampleEntityService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            builder.Services.AddScoped<IDataSeedService,BasicDataSeeder>();
+            builder.Services.AddScoped<IDataSeedService, BasicDataSeeder>();
             builder.Services.AddSwagger();
             builder.Services.AddWebFrameworkServices();
 
             builder.Services.AddApiVersioning();
+
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddAutoMapper(typeof(DomainMapperProfile).Assembly);
+
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
