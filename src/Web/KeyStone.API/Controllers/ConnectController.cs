@@ -1,43 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KeyStone.API.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
-    public class ConnectController : ControllerBase
+    [Route("api/v{version:apiVersion}/Connect")]
+    public class ConnectController : BaseController
     {
-        // GET: api/<ConnectController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpPost("Register")]
+        public IActionResult Register()
         {
-            return new string[] { "value1", "value2" };
+            return Ok("Register");
         }
 
-        // GET api/<ConnectController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("Token")]
+        public IActionResult Token()
         {
-            return "value";
+            return Ok("Token");
         }
 
-        // POST api/<ConnectController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("RefreshSignIn")]
+        public IActionResult RefreshSignIn()
         {
+            return Ok("RefreshSignIn");
         }
 
-        // PUT api/<ConnectController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Authorize]
+        [HttpGet("UserInfo")]
+        public IActionResult UserInfo()
         {
+            return Ok("UserInfo");
         }
 
-        // DELETE api/<ConnectController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("Logout")]
+        [Authorize]
+        public IActionResult Logout()
         {
+            return Ok("Logout");
         }
     }
 }

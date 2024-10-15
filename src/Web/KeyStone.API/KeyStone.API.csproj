@@ -44,6 +44,7 @@
 		<ProjectReference Include="..\..\KeyStone.Core\KeyStone.Core.csproj" />
 		<ProjectReference Include="..\..\KeyStone.Data\KeyStone.Data.csproj" />
 		<ProjectReference Include="..\..\KeyStone.Domain\KeyStone.Domain.csproj" />
+		<ProjectReference Include="..\..\KeyStone.Identity\KeyStone.Identity.csproj" />
 		<ProjectReference Include="..\..\KeyStone.Shared\KeyStone.Shared.csproj" />
 	</ItemGroup>
 

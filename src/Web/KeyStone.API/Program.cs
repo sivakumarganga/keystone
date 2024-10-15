@@ -8,6 +8,7 @@ using KeyStone.Data;
 using KeyStone.Data.Extensions;
 using KeyStone.Domain;
 using KeyStone.Domain.Services;
+using KeyStone.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -77,6 +78,7 @@ namespace KeyStone.API
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddAutoMapper(typeof(DomainMapperProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(IdentityMapperProfile).Assembly);
 
             var app = builder.Build();
 
