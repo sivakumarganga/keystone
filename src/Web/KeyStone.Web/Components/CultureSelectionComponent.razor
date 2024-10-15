@@ -17,28 +17,16 @@
     private List<KeyValuePair<string, string>> supportedUICultures = new()
     {
         new KeyValuePair<string, string>("en-US","English (US)"),
-        new KeyValuePair<string, string>("nl","Dutch (Aruba)")
     };
     private CultureInfo[] supportedCultures = new[]
     {
         new CultureInfo("en-US"),
-        new CultureInfo("nl"),
     };
 
     private string CurrentCulture
     {
         get
         {
-            CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol = "Awg. ";
-            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator = ",";
-            CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
-            CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator = ",";
-            CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator = ".";
-            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
-            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator = ","; 
-            CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator = ".";
-            CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator = ",";
-            CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator = ".";
             return CultureInfo.CurrentCulture.Name;
         }
         set
