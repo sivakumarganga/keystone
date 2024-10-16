@@ -7,33 +7,40 @@ using KeyStone.Core.Contracts;
 using KeyStone.Data;
 using KeyStone.Data.Models;
 using KeyStone.Data.RepoContracts;
+using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeyStone.Shared;
 
 namespace KeyStone.Domain.Services
 {
     public class SampleEntityService : ISampleContract
     {
-        // implement the interface here
         IUnitOfWork _unitOfWork;
         ISampleEntityRepository _sampleEntityRepository;
         IRepository<SampleEntity> _sampleEntityRepo;
+        IDistributedCache _cacheProvider;
         IMapper _mapper;
-        public SampleEntityService(IUnitOfWork unitOfWork,IMapper mapper)
+        public SampleEntityService(IUnitOfWork unitOfWork, IMapper mapper, IDistributedCache cacheProvider)
         {
             this._unitOfWork = unitOfWork;
             _sampleEntityRepo = this._unitOfWork.Repository<SampleEntity>();
             _sampleEntityRepository = this._unitOfWork.CustomRepository<ISampleEntityRepository>();
             _mapper = mapper;
+            _cacheProvider = cacheProvider;
         }
         public async Task<Result<IEnumerable<SampleConcern>>> GetAll()
         {
-
+            if (_cacheProvider.GetAsync("SampleEntities") != null)
+            {
+                var obj = await _cacheProvider.GetAsync<List<SampleConcern>>("SampleEntities");
+            }
             var result = await _sampleEntityRepository.GetAll();
             var sampleConcerns = result.Select(x => _mapper.Map<SampleConcern>(x));
+            await _cacheProvider.SetItemAsync("SampleEntities", sampleConcerns);
             return Result.Ok(sampleConcerns);
         }
         public async Task<Result<SampleConcern>> GetById(int id)
@@ -56,7 +63,7 @@ namespace KeyStone.Domain.Services
             {
                 Name = concern.Name
             };
-            _sampleEntityRepo.Add(entity);
+            await _sampleEntityRepo.AddAsync(entity);
             var changesCount = _unitOfWork.SaveChanges();
             if (changesCount == 0)
             {

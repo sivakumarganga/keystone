@@ -80,6 +80,7 @@ namespace KeyStone.API
             builder.Services.AddAutoMapper(typeof(DomainMapperProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(IdentityMapperProfile).Assembly);
 
+            builder.Services.AddDistributedMemoryCache();
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
