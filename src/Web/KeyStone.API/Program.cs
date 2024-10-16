@@ -73,7 +73,7 @@ namespace KeyStone.API
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddAutoMapper(typeof(DomainMapperProfile).Assembly);
-
+            builder.Services.AddDistributedMemoryCache();
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
