@@ -17,7 +17,6 @@ namespace KeyStone.Domain.Services
 {
     public class SampleEntityService : ISampleContract
     {
-        // implement the interface here
         IUnitOfWork _unitOfWork;
         ISampleEntityRepository _sampleEntityRepository;
         IRepository<SampleEntity> _sampleEntityRepo;
@@ -56,7 +55,7 @@ namespace KeyStone.Domain.Services
             {
                 Name = concern.Name
             };
-            _sampleEntityRepo.Add(entity);
+            await _sampleEntityRepo.AddAsync(entity);
             var changesCount = _unitOfWork.SaveChanges();
             if (changesCount == 0)
             {
