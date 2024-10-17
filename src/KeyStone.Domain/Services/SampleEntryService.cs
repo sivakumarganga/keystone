@@ -58,7 +58,7 @@ namespace KeyStone.Domain.Services
                 Name = concern.Name
             };
             _sampleEntityRepo.Add(entity);
-            var changesCount = _unitOfWork.SaveChanges();
+            var changesCount = await _unitOfWork.SaveChangesAsync();
             if (changesCount == 0)
             {
                 return Result.Fail<SampleConcern>("Failed to save record");
