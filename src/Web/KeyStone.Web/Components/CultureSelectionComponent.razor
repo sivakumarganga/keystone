@@ -1,0 +1,52 @@
+﻿@using System.Globalization
+@using KeyStone.Web.Shared.Resources
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<MudSelect T="string" Label="@LocalizationResource.SelectLanguage" AnchorOrigin="Origin.BottomCenter" @bind-Value="CurrentCulture">
+    @foreach (var culture in supportedUICultures)
+    {
+        <MudSelectItem Value="@culture.Key">
+            <MudText>@culture.Value</MudText>
+        </MudSelectItem>
+    }
+</MudSelect>
+
+@code
+{
+    private List<KeyValuePair<string, string>> supportedUICultures = new()
+    {
+        new KeyValuePair<string, string>("en-US","English (US)"),
+    };
+    private CultureInfo[] supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+    };
+
+    private string CurrentCulture
+    {
+        get
+        {
+            return CultureInfo.CurrentCulture.Name;
+        }
+        set
+        {
+            OnCultureChange(value);
+        }
+    }
+    public void OnCultureChange(string culture)
+    {
+        var cultureInfo = supportedCultures.FirstOrDefault(c => c.Name == culture);
+        if (cultureInfo != null)
+        {
+            if (CultureInfo.CurrentCulture != cultureInfo)
+            {
+                var js = (IJSInProcessRuntime)JS;
+                js.InvokeVoid("blazorCulture.set", cultureInfo.Name);
+
+                Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+            }
+        }
+    }
+    
+}

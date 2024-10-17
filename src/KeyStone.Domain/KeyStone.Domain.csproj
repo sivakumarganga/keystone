@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentResults" Version="3.16.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0-rc.2.24473.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\KeyStone.Concerns\KeyStone.Concerns.csproj" />
     <ProjectReference Include="..\KeyStone.Core\KeyStone.Core.csproj" />
     <ProjectReference Include="..\KeyStone.Data\KeyStone.Data.csproj" />
+    <ProjectReference Include="..\KeyStone.Shared\KeyStone.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

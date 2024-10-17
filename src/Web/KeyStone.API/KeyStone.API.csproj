@@ -15,8 +15,9 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Abstractions" Version="8.1.0" />
+		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.1.24452.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.1.24451.1">
 			<PrivateAssets>all</PrivateAssets>
@@ -27,7 +28,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0-rc.2.24473.5" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.1" />
@@ -36,6 +37,8 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.8.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.8.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.8.1" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.0-rc.1.24451.1" />
+		<PackageReference Include="System.Text.Json" Version="9.0.0-rc.1.24431.7" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,6 +46,12 @@
 		<ProjectReference Include="..\..\KeyStone.Data\KeyStone.Data.csproj" />
 		<ProjectReference Include="..\..\KeyStone.Domain\KeyStone.Domain.csproj" />
 		<ProjectReference Include="..\..\KeyStone.Shared\KeyStone.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\Responses\" />
+	  <Folder Include="NewFolder\" />
+	  <Folder Include="Models\Requests\" />
 	</ItemGroup>
 
 </Project>
