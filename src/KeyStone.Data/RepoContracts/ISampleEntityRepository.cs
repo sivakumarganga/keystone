@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeyStone.Data.RepoContracts
 {
-    public interface ISampleEntityRepository
+    public interface ISampleEntityRepository 
     {
         public Task<IEnumerable<SampleEntity>> GetAll();
     }

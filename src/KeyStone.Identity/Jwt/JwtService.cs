@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using KeyStone.Data.RepoContracts;
 
 namespace KeyStone.Identity.Jwt
 {
@@ -20,15 +21,18 @@ namespace KeyStone.Identity.Jwt
         private readonly AppUserManager _userManager;
         private readonly IUserClaimsPrincipalFactory<User> _claimsPrincipal;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRefreshTokenRepository _refreshTokenRepository;
         public JwtService(IOptions<IdentitySettings> siteSetting,
                           AppUserManager userManager,
                           IUserClaimsPrincipalFactory<User> claimsPrincipal,
-                          IUnitOfWork unitOfWork)
+                          IUnitOfWork unitOfWork,
+                          IUserRefreshTokenRepository refreshTokenRepository)
         {
             _claimsPrincipal = claimsPrincipal;
             _siteSetting = siteSetting.Value;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _refreshTokenRepository = refreshTokenRepository;
         }
         public async Task<AccessTokenResponse> GenerateAsync(User user)
         {
@@ -94,10 +98,22 @@ namespace KeyStone.Identity.Jwt
             return Task.FromResult(principal);
         }
 
-        public Task<AccessTokenResponse> RefreshToken(Guid refreshTokenId)
+        public async Task<AccessTokenResponse> RefreshToken(Guid refreshTokenId)
         {
-            //TODO: Implement Refresh Token
-            throw new NotImplementedException();
+            var refreshToken = await _refreshTokenRepository.GetTokenWithInvalidation(refreshTokenId);
+            if (refreshToken is not null)
+            {
+                refreshToken.IsValid = false;
+                _refreshTokenRepository.Update(refreshToken);
+                var user = await _refreshTokenRepository.GetUserByRefreshToken(refreshTokenId);
+
+                if (user is null)
+                    return null;
+
+                var result = await this.GenerateAsync(user);
+            }
+
+            return default;
         }
 
         private async Task<IEnumerable<Claim>> GetClaimsAsync(User user)

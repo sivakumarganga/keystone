@@ -1,4 +1,8 @@
 ﻿using Asp.Versioning;
+using KeyStone.Core.Contracts.Identity;
+using KeyStone.Shared.API.RequestModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,16 +15,27 @@ namespace KeyStone.API.Controllers
     [Route("api/v{version:apiVersion}/Connect")]
     public class ConnectController : BaseController
     {
-        [HttpPost("Register")]
-        public IActionResult Register()
+        private readonly ILogger<ConnectController> _logger;
+        private readonly IAccountContract _accountService;
+
+        public ConnectController(ILogger<ConnectController> logger, IAccountContract accountService)
         {
-            return Ok("Register");
+            _logger = logger;
+            _accountService = accountService;
+        }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(SignUpRequest request)
+        {
+            var serviceResult = await _accountService.SignUpAsync(request);
+            return ResultResponse(serviceResult);
         }
 
         [HttpPost("Token")]
-        public IActionResult Token()
+        public async Task<IActionResult> Token(LoginRequest request)
         {
-            return Ok("Token");
+            var serviceResult = await _accountService.GetTokenAsync(request);
+            return ResultResponse(serviceResult);
         }
 
         [HttpPost("RefreshSignIn")]
@@ -31,16 +46,32 @@ namespace KeyStone.API.Controllers
 
         [Authorize]
         [HttpGet("UserInfo")]
-        public IActionResult UserInfo()
+        public async Task<IActionResult> UserInfo()
         {
-            return Ok("UserInfo");
+            var serviceResult = await _accountService.GetUserInfoAsync();
+            return ResultResponse(serviceResult);
         }
 
         [HttpPost("Logout")]
         [Authorize]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return Ok("Logout");
+            var serviceResult = await _accountService.RequestLogoutAsync();
+            return ResultResponse(serviceResult);
+        }
+
+        [HttpPost("RefreshSignIn")]
+        public async Task<IActionResult> RefreshUserToken(Guid refreshToken)
+        {
+            var checkCurrentAccessTokenValidity =
+                await HttpContext.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
+
+            if (checkCurrentAccessTokenValidity.Succeeded)
+                return BadRequest("Current access token is valid. No need to refresh");
+
+            var newTokenResult = await _accountService.RefreshUserTokenAsync(refreshToken);
+
+            return ResultResponse(newTokenResult);
         }
     }
 }
