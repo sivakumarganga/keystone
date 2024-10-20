@@ -10,13 +10,17 @@ namespace KeyStone.Data.Models.Identity
         {
             CreatedClaim = DateTime.Now;
         }
-        public int Id { get; set; }
         public DateTime CreatedClaim { get; set; }
         public Role Role { get; set; } = null!;
 
         public void Configure(EntityTypeBuilder<RoleClaim> builder)
         {
-            builder.ToTable("RoleClaims","usr");
+            builder.ToTable("RoleClaims", "usr");
+
+            builder.HasOne(u => u.Role)
+                   .WithMany(u => u.Claims)
+                   .HasForeignKey(u => u.RoleId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

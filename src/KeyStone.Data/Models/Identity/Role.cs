@@ -10,7 +10,6 @@ namespace KeyStone.Data.Models.Identity
         {
             CreatedDate = DateTime.Now;
         }
-        public int Id { get; set; }
         public string DisplayName { get; set; } = String.Empty;
         public DateTime CreatedDate { get; set; }
         public ICollection<RoleClaim> Claims { get; set; } = null!;

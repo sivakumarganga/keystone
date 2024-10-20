@@ -10,7 +10,6 @@ namespace KeyStone.Data.Models.Identity
         {
             this.UserCode = Guid.NewGuid().ToString().Substring(0, 8);
         }
-        public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public string FamilyName { get; set; } = String.Empty;
         public string UserCode { get; set; } = String.Empty;
@@ -22,7 +21,9 @@ namespace KeyStone.Data.Models.Identity
         public ICollection<UserRefreshToken> UserRefreshTokens { get; set; } = null!;
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users","usr");
+            builder.ToTable("Users", "usr")
+                   .Property(p => p.Id)
+                   .HasColumnName("UserId");
         }
     }
 }

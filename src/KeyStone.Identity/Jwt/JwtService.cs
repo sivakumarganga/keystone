@@ -62,12 +62,13 @@ namespace KeyStone.Identity.Jwt
 
             var securityToken = tokenHandler.CreateJwtSecurityToken(descriptor);
 
-            //TODO: Create Refresh Token
-            //var refreshToken = await _unitOfWork.UserRefreshTokenRepository.CreateToken(user.Id);
-            await _unitOfWork.CommitAsync();
+            var repository = _unitOfWork.CustomRepository<IUserRefreshTokenRepository>();
+            var refreshToken = await repository.CreateToken(user.Id);
+
+            await _unitOfWork.SaveChangesAsync();
 
             //TODO: Pass refresh token
-            return new AccessTokenResponse(securityToken, string.Empty);
+            return new AccessTokenResponse(securityToken, refreshToken.ToString());
         }
 
         public async Task<AccessTokenResponse> GenerateByPhoneNumberAsync(string phoneNumber)

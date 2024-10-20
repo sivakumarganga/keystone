@@ -63,6 +63,7 @@ namespace KeyStone.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
@@ -73,12 +74,18 @@ namespace KeyStone.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("Roles", "usr");
                 });
@@ -114,7 +121,8 @@ namespace KeyStone.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("UserId");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
@@ -122,10 +130,12 @@ namespace KeyStone.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
@@ -145,10 +155,12 @@ namespace KeyStone.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -170,9 +182,17 @@ namespace KeyStone.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("Users", "usr");
                 });
@@ -203,30 +223,25 @@ namespace KeyStone.Data.Migrations
 
             modelBuilder.Entity("KeyStone.Data.Models.Identity.UserLogin", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LoggedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProviderKey")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
@@ -257,60 +272,45 @@ namespace KeyStone.Data.Migrations
 
             modelBuilder.Entity("KeyStone.Data.Models.Identity.UserRole", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedUserRoleDate")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("CreatedUserRoleDate")
+                        .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles", "usr");
                 });
 
             modelBuilder.Entity("KeyStone.Data.Models.Identity.UserToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("GeneratedTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("LoginProvider")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserToken");
+                    b.ToTable("UserTokens", "usr");
                 });
 
             modelBuilder.Entity("KeyStone.Data.Models.SampleEntity", b =>

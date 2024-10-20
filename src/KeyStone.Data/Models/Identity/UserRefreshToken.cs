@@ -16,7 +16,11 @@ namespace KeyStone.Data.Models.Identity
         public bool IsValid { get; set; }
         public void Configure(EntityTypeBuilder<UserRefreshToken> builder)
         {
-            builder.ToTable("UserRefreshTokens","usr");
+            builder.HasOne(c => c.User)
+                   .WithMany(c => c.UserRefreshTokens)
+                   .HasForeignKey(c => c.UserId);
+
+            builder.ToTable("UserRefreshTokens", "usr");
         }
     }
 }

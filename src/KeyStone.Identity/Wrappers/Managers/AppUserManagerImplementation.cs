@@ -77,7 +77,6 @@ namespace KeyStone.Identity.Wrappers.Managers
         public async Task<User> GetByUserName(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            //user.UserRoles=await _userManager.GetRolesAsync(user);
             return user;
         }
 

@@ -15,6 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using KeyStone.Identity.Dtos;
 using KeyStone.Identity.ServiceConfiguration;
+using Microsoft.Extensions.Configuration;
 
 namespace KeyStone.API
 {
@@ -33,6 +34,8 @@ namespace KeyStone.API
                                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
                                 .AddEnvironmentVariables()
                                 .AddUserSecrets(Assembly.GetEntryAssembly()!);
+
+            builder.Services.Configure<IdentitySettings>(builder.Configuration.GetSection(nameof(IdentitySettings)));
 
 
 
@@ -75,6 +78,8 @@ namespace KeyStone.API
             builder.Services.AddScoped<IDataSeedService, BasicDataSeeder>();
             builder.Services.AddSwagger();
             builder.Services.AddHttpContextAccessor();
+            builder.Services.ConfigureRequestContext();
+            builder.Services.ConfigureRequestValidators();
             var identitySettings = builder.Configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
             builder.Services.RegisterIdentityServices(identitySettings: identitySettings);
             builder.Services.AddWebFrameworkServices();

@@ -16,7 +16,10 @@ namespace KeyStone.Data.Models.Identity
         public DateTime LoggedOn { get; set; }
         public void Configure(EntityTypeBuilder<UserLogin> builder)
         {
-            builder.ToTable("UserLogins","usr");
+            builder.HasOne(u => u.User)
+                .WithMany(u => u.Logins)
+                .HasForeignKey(u => u.UserId);
+            builder.ToTable("UserLogins", "usr");
         }
     }
 }

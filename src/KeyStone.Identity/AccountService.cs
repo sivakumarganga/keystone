@@ -93,7 +93,7 @@ namespace KeyStone.Identity
                 UserKey = user.UserCode,
                 Email = user.Email!,
                 DisplayName = $"{user.Name} {user.FamilyName}",
-                Roles = user.UserRoles.Select(item => item.Role.Name).ToList()!
+                Role = _requestContext.Role
             });
         }
 

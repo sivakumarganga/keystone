@@ -45,6 +45,7 @@ namespace KeyStone.Identity.ServiceConfiguration
             services.AddScoped<IRoleStore<Role>, RoleStore>();
             services.AddScoped<IUserStore<User>, AppUserStore>();
             services.AddScoped<IRoleManagerService, RoleManagerService>();
+            services.AddScoped<IAccountContract, AccountService>();
 
 
             services.AddIdentity<User, Role>(options =>
