@@ -3,6 +3,7 @@ using System;
 using KeyStone.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KeyStone.Data.Migrations
 {
     [DbContext(typeof(KeyStoneDbContext))]
-    partial class KeyStoneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241020164924_PostgresDateTimeFix")]
+    partial class PostgresDateTimeFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
