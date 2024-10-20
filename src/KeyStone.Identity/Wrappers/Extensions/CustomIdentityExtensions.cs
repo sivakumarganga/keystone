@@ -49,7 +49,7 @@ namespace KeyStone.Identity.Wrappers.Extensions
     public class PasswordlessLoginTokenProvider<TUser> : DataProtectorTokenProvider<TUser>
         where TUser : class
     {
-        public PasswordlessLoginTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions> options, ILogger<DataProtectorTokenProvider<TUser>> logger) : base(dataProtectionProvider, options)
+        public PasswordlessLoginTokenProvider(IDataProtectionProvider dataProtectionProvider, IOptions<Microsoft.AspNetCore.Identity.DataProtectionTokenProviderOptions> options, ILogger<DataProtectorTokenProvider<TUser>> logger) : base(dataProtectionProvider, options,logger)
         {
         }
     }

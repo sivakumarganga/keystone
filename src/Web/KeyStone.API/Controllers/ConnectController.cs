@@ -1,10 +1,13 @@
 ﻿using Asp.Versioning;
-using KeyStone.Core.Contracts.Identity;
+using FluentResults;
+using FluentValidation;
+using KeyStone.Identity.Contracts;
 using KeyStone.Shared.API.RequestModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,16 +20,26 @@ namespace KeyStone.API.Controllers
     {
         private readonly ILogger<ConnectController> _logger;
         private readonly IAccountContract _accountService;
+        private readonly IValidator<SignUpRequest> _signUpRequestValidator;
+        private readonly IValidator<LoginRequest> _loginRequestValidator;
 
-        public ConnectController(ILogger<ConnectController> logger, IAccountContract accountService)
+        public ConnectController(ILogger<ConnectController> logger, IAccountContract accountService, IValidator<SignUpRequest> signUpRequestValidator, IValidator<LoginRequest> loginRequestValidator)
         {
             _logger = logger;
             _accountService = accountService;
+            _signUpRequestValidator = signUpRequestValidator;
+            _loginRequestValidator = loginRequestValidator;
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(SignUpRequest request)
         {
+            var validationResult = _signUpRequestValidator.Validate(request);
+            if (!validationResult.IsValid)
+            {
+                return ResultResponse(validationResult.Errors);
+            }
+            
             var serviceResult = await _accountService.SignUpAsync(request);
             return ResultResponse(serviceResult);
         }
@@ -34,14 +47,14 @@ namespace KeyStone.API.Controllers
         [HttpPost("Token")]
         public async Task<IActionResult> Token(LoginRequest request)
         {
+            var validationResult = _loginRequestValidator.Validate(request);
+            if (!validationResult.IsValid)
+            {
+                return ResultResponse(validationResult.Errors);
+            }
+            
             var serviceResult = await _accountService.GetTokenAsync(request);
             return ResultResponse(serviceResult);
-        }
-
-        [HttpPost("RefreshSignIn")]
-        public IActionResult RefreshSignIn()
-        {
-            return Ok("RefreshSignIn");
         }
 
         [Authorize]

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace KeyStone.Core.Contracts.Identity
+namespace KeyStone.Identity.Contracts
 {
     public interface IDynamicPermissionService
     {

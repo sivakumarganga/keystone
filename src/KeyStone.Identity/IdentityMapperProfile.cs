@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using KeyStone.Concerns.Identity;
+using KeyStone.Data.Models.Identity;
 using KeyStone.Shared.Models.Identity;
 
 namespace KeyStone.Identity

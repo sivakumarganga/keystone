@@ -1,4 +1,5 @@
 ﻿using KeyStone.Concerns.Domain;
+using KeyStone.Data.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +15,9 @@ namespace KeyStone.Identity.Wrappers.Managers
                                 IUserClaimsPrincipalFactory<User> claimsFactory,
                                 IOptions<IdentityOptions> optionsAccessor,
                                 ILogger<SignInManager<User>> logger,
-                                IAuthenticationSchemeProvider schemes)
-            : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
+                                IAuthenticationSchemeProvider schemes,
+                                IUserConfirmation<User> confirmation)
+            : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
         {
         }
     }

@@ -1,4 +1,4 @@
-﻿using KeyStone.Concerns.Identity;
+﻿using KeyStone.Data.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace KeyStone.Identity.Wrappers.Validators

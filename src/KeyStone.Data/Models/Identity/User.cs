@@ -1,20 +1,16 @@
-﻿using KeyStone.Concerns.Identity;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace KeyStone.Concerns.Domain
+namespace KeyStone.Data.Models.Identity
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<int>, IEntityTypeConfiguration<User>
     {
         public User()
         {
             this.UserCode = Guid.NewGuid().ToString().Substring(0, 8);
         }
-
+        public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public string FamilyName { get; set; } = String.Empty;
         public string UserCode { get; set; } = String.Empty;
@@ -24,5 +20,9 @@ namespace KeyStone.Concerns.Domain
         public ICollection<UserClaim> Claims { get; set; } = null!;
         public ICollection<UserToken> Tokens { get; set; } = null!;
         public ICollection<UserRefreshToken> UserRefreshTokens { get; set; } = null!;
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.ToTable("Users","usr");
+        }
     }
 }

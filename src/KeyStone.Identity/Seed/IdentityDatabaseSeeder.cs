@@ -1,6 +1,6 @@
 ﻿using EntityFrameworkCore.UnitOfWork.Interfaces;
 using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
+using KeyStone.Data.Models.Identity;
 using KeyStone.Identity.Wrappers.Managers;
 using Microsoft.EntityFrameworkCore;
 

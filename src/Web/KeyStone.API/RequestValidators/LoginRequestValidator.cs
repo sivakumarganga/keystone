@@ -1,7 +1,7 @@
 using FluentValidation;
 using KeyStone.Shared.API.RequestModels;
 
-namespace KeyStone.Shared.API.Validators;
+namespace KeyStone.API.RequestValidators;
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {

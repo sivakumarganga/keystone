@@ -1,10 +1,9 @@
 ﻿using FluentResults;
-using KeyStone.Concerns.Identity;
 using KeyStone.Shared.API.RequestModels;
 using KeyStone.Shared.Models;
 using KeyStone.Shared.Models.Identity;
 
-namespace KeyStone.Core.Contracts.Identity
+namespace KeyStone.Identity.Contracts
 {
     public interface IAccountContract
     {

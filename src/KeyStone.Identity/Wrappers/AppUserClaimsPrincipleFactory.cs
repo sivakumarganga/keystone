@@ -1,9 +1,9 @@
 ﻿using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
 using KeyStone.Identity.Wrappers.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
+using KeyStone.Data.Models.Identity;
 
 namespace KeyStone.Identity.Wrappers
 {

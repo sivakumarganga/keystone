@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using FluentResults;
 using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
 using KeyStone.Core.Context;
-using KeyStone.Core.Contracts.Identity;
+using KeyStone.Data.Models.Identity;
+using KeyStone.Identity.Contracts;
 using KeyStone.Shared.API.RequestModels;
 using KeyStone.Shared.Models;
 using KeyStone.Shared.Models.Identity;

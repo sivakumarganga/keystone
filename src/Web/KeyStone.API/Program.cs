@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using KeyStone.Identity.Dtos;
+using KeyStone.Identity.ServiceConfiguration;
 
 namespace KeyStone.API
 {
@@ -34,7 +36,6 @@ namespace KeyStone.API
 
 
 
-
             builder.Services.AddDbContext<KeyStoneDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("KeyStoneConnection"); // Use your connection string name
@@ -51,6 +52,7 @@ namespace KeyStone.API
                     var assemblyName = assembly.GetName();
                     npgSqlOptions.MigrationsAssembly(assemblyName.Name);
                 });
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                 //options.UseInMemoryDatabase("MyDatabase");
                 options.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
             });
@@ -72,6 +74,9 @@ namespace KeyStone.API
 
             builder.Services.AddScoped<IDataSeedService, BasicDataSeeder>();
             builder.Services.AddSwagger();
+            builder.Services.AddHttpContextAccessor();
+            var identitySettings = builder.Configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
+            builder.Services.RegisterIdentityServices(identitySettings: identitySettings);
             builder.Services.AddWebFrameworkServices();
 
             builder.Services.AddApiVersioning();
@@ -84,6 +89,7 @@ namespace KeyStone.API
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
+            await app.SeedDefaultUsers();
             await app.SeedDefaultBusinessEntitiesAsync();
             app.UseSwaggerAndUI();
             // Configure the HTTP request pipeline.

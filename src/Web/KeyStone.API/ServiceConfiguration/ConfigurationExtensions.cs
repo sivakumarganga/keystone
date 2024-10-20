@@ -1,4 +1,7 @@
-﻿using KeyStone.API.Middlewares;
+﻿using FluentValidation;
+using KeyStone.API.Middlewares;
+using KeyStone.API.RequestValidators;
+using KeyStone.Shared.API.RequestModels;
 
 namespace KeyStone.API.ServiceConfiguration
 {
@@ -8,6 +11,14 @@ namespace KeyStone.API.ServiceConfiguration
         {
             app.UseMiddleware<RequestIdMiddleware>();
             return app;
+        }
+
+        public static IServiceCollection ConfigureRequestValidators(this IServiceCollection services)
+        {
+            services.AddTransient<IValidator<SignUpRequest>, SignUpRequestValidator>();
+            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+
+            return services;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
 using KeyStone.Data;
+using KeyStone.Data.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 

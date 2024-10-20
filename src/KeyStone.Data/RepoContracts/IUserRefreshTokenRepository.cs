@@ -1,5 +1,5 @@
-using KeyStone.Concerns.Domain;
-using KeyStone.Data.Models;
+using KeyStone.Data.Models.Identity;
+
 
 namespace KeyStone.Data.RepoContracts;
 

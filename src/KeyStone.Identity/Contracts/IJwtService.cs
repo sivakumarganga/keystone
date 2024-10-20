@@ -1,8 +1,8 @@
-﻿using KeyStone.Concerns.Domain;
+﻿using System.Security.Claims;
+using KeyStone.Data.Models.Identity;
 using KeyStone.Shared.Models.Identity;
-using System.Security.Claims;
 
-namespace KeyStone.Core.Contracts.Identity
+namespace KeyStone.Identity.Contracts
 {
     public interface IJwtService
     {

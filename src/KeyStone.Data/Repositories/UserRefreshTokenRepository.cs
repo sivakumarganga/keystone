@@ -1,7 +1,6 @@
 using EntityFrameworkCore.Repository;
 using EntityFrameworkCore.Repository.Interfaces;
-using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
+using KeyStone.Data.Models.Identity;
 using KeyStone.Data.RepoContracts;
 using Microsoft.EntityFrameworkCore;
 using DM = KeyStone.Data.Models;
@@ -21,16 +20,16 @@ public class UserRefreshTokenRepository : Repository<UserRefreshToken>,IReposito
         return token.Id;
     }
 
-    public async Task<DM.UserRefreshToken> GetTokenWithInvalidation(Guid id)
+    public async Task<UserRefreshToken> GetTokenWithInvalidation(Guid id)
     {
-        var token = await base.DbContext.Set<DM.UserRefreshToken>().Where(t => t.IsValid && t.Id.Equals(id)).FirstOrDefaultAsync();
+        var token = await base.DbContext.Set<UserRefreshToken>().Where(t => t.IsValid && t.Id.Equals(id)).FirstOrDefaultAsync();
 
         return token;
     }
 
     public async Task<User> GetUserByRefreshToken(Guid tokenId)
     {
-        var user = await base.DbContext.Set<DM.UserRefreshToken>().AsNoTracking().Include(t => t.User).Where(c => c.Id.Equals(tokenId))
+        var user = await base.DbContext.Set<UserRefreshToken>().AsNoTracking().Include(t => t.User).Where(c => c.Id.Equals(tokenId))
             .Select(c => c.User).FirstOrDefaultAsync();
 
         return user;
@@ -41,8 +40,8 @@ public class UserRefreshTokenRepository : Repository<UserRefreshToken>,IReposito
         throw new NotImplementedException();
     }
 
-    public void Update(DM.UserRefreshToken entity)
+    public void Update(UserRefreshToken entity)
     {
-        base.DbContext.Set<DM.UserRefreshToken>().Update(entity);
+        base.DbContext.Set<UserRefreshToken>().Update(entity);
     }
 }

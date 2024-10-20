@@ -1,8 +1,7 @@
-﻿using KeyStone.Concerns.Domain;
-using KeyStone.Concerns.Identity;
+﻿using KeyStone.Data.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace KeyStone.Core.Contracts.Identity
+namespace KeyStone.Identity.Contracts
 {
     public interface IAppUserManager
     {

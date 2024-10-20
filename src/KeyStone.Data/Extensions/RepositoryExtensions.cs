@@ -1,13 +1,7 @@
-﻿using EntityFrameworkCore.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using EntityFrameworkCore.Repository.Interfaces;
 
-namespace KeyStone.Data
+namespace KeyStone.Data.Extensions
 {
     public static class RepositoryExtensions
     {

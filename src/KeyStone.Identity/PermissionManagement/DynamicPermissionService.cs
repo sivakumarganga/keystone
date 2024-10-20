@@ -1,5 +1,5 @@
-﻿using KeyStone.Core.Contracts.Identity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using KeyStone.Identity.Contracts;
 
 namespace KeyStone.Identity.PermissionManagement
 {

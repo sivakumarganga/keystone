@@ -1,8 +1,9 @@
-﻿using KeyStone.Concerns.Identity;
+﻿using KeyStone.Data.Models.Identity;
+using KeyStone.Identity.Dtos;
 using KeyStone.Shared.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace KeyStone.Core.Contracts.Identity
+namespace KeyStone.Identity.Contracts
 {
     public interface IRoleManagerService
     {

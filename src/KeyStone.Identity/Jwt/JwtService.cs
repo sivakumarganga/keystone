@@ -1,6 +1,5 @@
 ﻿using EntityFrameworkCore.UnitOfWork.Interfaces;
 using KeyStone.Concerns.Domain;
-using KeyStone.Core.Contracts.Identity;
 using KeyStone.Identity.Dtos;
 using KeyStone.Identity.Wrappers.Managers;
 using KeyStone.Shared.Models.Identity;
@@ -11,7 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using KeyStone.Data.Models.Identity;
 using KeyStone.Data.RepoContracts;
+using KeyStone.Identity.Contracts;
 
 namespace KeyStone.Identity.Jwt
 {

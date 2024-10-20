@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using KeyStone.Concerns.Identity;
-using KeyStone.Core.Contracts.Identity;
 using KeyStone.Data;
 using KeyStone.Identity.Wrappers.Managers;
 using KeyStone.Shared.Models.Identity;
@@ -20,6 +18,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using KeyStone.Data.Models.Identity;
+using KeyStone.Identity.Contracts;
+using KeyStone.Identity.Dtos;
 
 namespace KeyStone.Identity.PermissionManagement
 {
