@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeyStone.Data.Extensions;
 using KeyStone.Shared;
 
 namespace KeyStone.Domain.Services

@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using FluentValidation.Results;
 using KeyStone.Shared.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,10 @@ namespace KeyStone.API.Controllers
         {
         }
 
+        protected string GetRequestId()
+        {
+            return (string)HttpContext.Items["RequestId"];
+        }
         protected IActionResult ResultResponse<T>(Result<T> result)
         {
             if (result.IsFailed)
@@ -28,6 +33,11 @@ namespace KeyStone.API.Controllers
                 return BadRequestResponse(GetApiError(result.Errors));
             }
             return OkResponse();
+        }
+
+        protected IActionResult ResultResponse(List<ValidationFailure> failures)
+        {
+            return BadRequestResponse(GetApiError(failures));
         }
 
         //generate OkResponse
@@ -51,6 +61,16 @@ namespace KeyStone.API.Controllers
             foreach (var error in errors)
             {
                 message += error.Message + "\n";
+            }
+            return new ApiError(message);
+        }
+
+        private ApiError GetApiError(List<ValidationFailure> errors)
+        {
+            string message = string.Empty;
+            foreach (var error in errors)
+            {
+                message += error.ErrorMessage + "\n";
             }
             return new ApiError(message);
         }

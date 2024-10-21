@@ -15,7 +15,8 @@ namespace KeyStone.Data.Extensions
         {
 
             services.AddTransient<ISampleEntityRepository, SampleEntityRepository>();
-                
+            services.AddTransient<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
+            
             return services;
         }
     }

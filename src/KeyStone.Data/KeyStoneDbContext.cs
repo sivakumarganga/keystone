@@ -1,18 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EntityFrameworkCore.AutoHistory.Extensions;
-using System.Reflection.Emit;
-using System.Security.Principal;
+﻿using EntityFrameworkCore.AutoHistory.Extensions;
 using KeyStone.Data.Extensions;
+using KeyStone.Data.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace KeyStone.Data
 {
-    public class KeyStoneDbContext : DbContext
+    public class KeyStoneDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public KeyStoneDbContext(DbContextOptions<KeyStoneDbContext> options)
       : base(options)
@@ -50,11 +45,22 @@ namespace KeyStone.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             // Enables auto history functionality.
             builder.EnableAutoHistory();
             var entitiesAssembly = typeof(IEntity).Assembly;
             builder.RegisterAllEntities<IEntity>(entitiesAssembly);
             builder.ApplyConfigurationsFromAssembly(typeof(KeyStoneDbContext).Assembly);
         }
+
+        /*
+         * Migrations Guide
+         * 
+         * 1. Navigate to src folder
+         * 2. Add a migration : dotnet ef migrations add <MigrationName> --project ./KeyStone.Data/KeyStone.Data.csproj --startup-project ./Web/KeyStone.API/KeyStone.API.csproj
+         * 3. Update database : dotnet ef database update --project ./KeyStone.Data/KeyStone.Data.csproj --startup-project ./Web/KeyStone.API/KeyStone.API.csproj
+         *
+         * Note: If you are using a different project structure, please adjust the paths accordingly.
+         */
     }
 }

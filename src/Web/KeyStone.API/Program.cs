@@ -1,32 +1,41 @@
 
 using EntityFrameworkCore.UnitOfWork.Extensions;
 using KeyStone.API.Extensions;
+using KeyStone.API.ServiceConfiguration;
 using KeyStone.Core.Contracts;
 using KeyStone.Core.Services;
 using KeyStone.Data;
 using KeyStone.Data.Extensions;
+using KeyStone.Domain;
 using KeyStone.Domain.Services;
+using KeyStone.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Asp.Versioning;
-using KeyStone.Domain;
+using KeyStone.Identity.Dtos;
+using KeyStone.Identity.ServiceConfiguration;
+using Microsoft.Extensions.Configuration;
 
 namespace KeyStone.API
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                Args = args,
+                ApplicationName = "KeyStone.API",
+            });
 
             builder.Configuration.AddJsonFile("appsettings.json")
                                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
                                 .AddEnvironmentVariables()
                                 .AddUserSecrets(Assembly.GetEntryAssembly()!);
 
+            builder.Services.Configure<IdentitySettings>(builder.Configuration.GetSection(nameof(IdentitySettings)));
 
 
 
@@ -46,6 +55,7 @@ namespace KeyStone.API
                     var assemblyName = assembly.GetName();
                     npgSqlOptions.MigrationsAssembly(assemblyName.Name);
                 });
+                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
                 //options.UseInMemoryDatabase("MyDatabase");
                 options.ConfigureWarnings(x => x.Ignore(RelationalEventId.AmbientTransactionWarning));
             });
@@ -67,16 +77,24 @@ namespace KeyStone.API
 
             builder.Services.AddScoped<IDataSeedService, BasicDataSeeder>();
             builder.Services.AddSwagger();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.ConfigureRequestContext();
+            builder.Services.ConfigureRequestValidators();
+            var identitySettings = builder.Configuration.GetSection(nameof(IdentitySettings)).Get<IdentitySettings>();
+            builder.Services.RegisterIdentityServices(identitySettings: identitySettings);
             builder.Services.AddWebFrameworkServices();
 
             builder.Services.AddApiVersioning();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddAutoMapper(typeof(DomainMapperProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(IdentityMapperProfile).Assembly);
+
             builder.Services.AddDistributedMemoryCache();
             var app = builder.Build();
 
             await app.ApplyMigrationsAsync();
+            await app.SeedDefaultUsers();
             await app.SeedDefaultBusinessEntitiesAsync();
             app.UseSwaggerAndUI();
             // Configure the HTTP request pipeline.
@@ -89,6 +107,7 @@ namespace KeyStone.API
 
             app.UseAuthorization();
 
+            app.ConfigureCustomMiddlewares();
 
             app.MapControllers();
 
