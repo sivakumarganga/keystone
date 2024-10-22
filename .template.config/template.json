@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Siva Kumar Siddam",
+  "classifications": [
+    "KeyStone",
+    "Blazor Full Stack"
+  ],
+  "identity": "KeyStone",
+  "name": "KeyStone: BlazorFullStack",
+  "shortName": "keystone-fullstack",
+  "sourceName": "KeyStone",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            ".vs/**",
+            ".git/**",
+            ".github/**",
+            ".gitignore"
+          ]
+        }
+      ]
+    }
+  ]
+}
