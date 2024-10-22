@@ -29,7 +29,16 @@ namespace KeyStone.API
                 Args = args,
                 ApplicationName = "KeyStone.API",
             });
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "allowBlazorLocal",
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:8086")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                    });
+            });
             builder.Configuration.AddJsonFile("appsettings.json")
                                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
                                 .AddEnvironmentVariables()
@@ -104,7 +113,9 @@ namespace KeyStone.API
             }
 
             app.UseHttpsRedirection();
-
+            
+            app.UseCors("allowBlazorLocal");
+            
             app.UseAuthorization();
 
             app.ConfigureCustomMiddlewares();

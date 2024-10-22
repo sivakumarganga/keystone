@@ -2,6 +2,7 @@
 using KeyStone.Web.Pages.Account;
 using KeyStone.Web.StateFactory;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace KeyStone.Web.Components
 {
@@ -19,8 +20,9 @@ namespace KeyStone.Web.Components
             bool isAuthenticated = await AccountManagement.CheckAuthenticatedAsync();
             if (!isAuthenticated)
             {
-                await AccountManagement.LogoutAsync();
                 NavigationManager.NavigateTo("/login");
+                await AccountManagement.LogoutAsync();
+                Console.WriteLine("logged out");
             }
         }
     }

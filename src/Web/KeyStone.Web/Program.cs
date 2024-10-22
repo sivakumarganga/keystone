@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using KeyStone.Web;
+using KeyStone.Web.Common;
 using KeyStone.Web.Contracts;
 using KeyStone.Web.Middlewares;
 using KeyStone.Web.Services;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<ToastService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ILocalStorageProvider, LocalStorageService>();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthStateProvider>();
 builder.Services.AddScoped(sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());
 builder.Services.AddScoped<BaseService>();
@@ -39,6 +41,11 @@ builder.Services.AddScoped<BaseService>();
 builder.Services.AddScoped<AuthInterceptor>();
 builder.Services.AddScoped<HttpClientResponseInterceptor>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<AuthInterceptor>();
+builder.Services.AddScoped<HttpClientResponseInterceptor>();
+builder.Services.AddHttpClient(Constants.ApiHttpClient, client => client.BaseAddress = new Uri(builder.Configuration["APIServer:Url"]!))
+    .AddHttpMessageHandler<AuthInterceptor>()
+    .AddHttpMessageHandler<HttpClientResponseInterceptor>();
 builder.Services.AddLocalization();
 builder.Services.AddTransient<MudLocalizer, ResXMudLocalizer>();
 builder.Services.AddTransient<ResXMudLocalizer>();
